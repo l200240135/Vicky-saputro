@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Saya - Data Diri Profesional</title>
+    <style>
+        /* ============================================
+           BAGIAN 1: RESET & PENGATURAN DASAR
+           ============================================ */
+        * {
+            margin: 0;              /* Hilangkan jarak default */
+            padding: 0;             /* Hilangkan padding default */
+            box-sizing: border-box; /* Ukuran kotak lebih akurat */
+        }
+
+        /* BODY - Seluruh halaman */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
+            min-height: 100vh;      /* Tinggi minimum = layar penuh */
+            padding: 20px;
+            display: flex;          /* Untuk center */
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ============================================
+           BAGIAN 2: CONTAINER UTAMA (Kotak Putih)
+           ============================================ */
+        .container {
+            background: white;
+            border-radius: 15px;    /* Sudut bulat */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); /* Bayangan */
+            max-width: 600px;       /* Lebar maksimal */
+            width: 100%;            /* Responsive */
+            overflow: hidden;       /* Isi tidak keluar */
+            animation: slideIn 0.5s ease-out; /* Animasi masuk */
+        }
+
+        /* Animasi slide in saat pertama kali load */
+        @keyframes slideIn {
+            from {
+                opacity: 0;          /* Mulai transparan */
+                transform: translateY(20px); /* Mulai dari bawah */
+            }
+            to {
+                opacity: 1;          /* Akhir opaque */
+                transform: translateY(0); /* Posisi normal */
+            }
+        }
+
+        /* ============================================
+           BAGIAN 3: HEADER (Bagian Atas - Biru)
+           ============================================ */
+        .header {
+            background: linear-gradient(135deg, #ffffff 0%, hsl(250, 100%, 50%) 100%);
+            color: white;
+            padding: 40px 20px;     /* Atas bawah 40px, kiri kanan 20px */
+            text-align: center;     /* Teks di tengah */
+            position: relative;
+        }
+
+        /* Foto Profil (Lingkaran) */
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: white;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 4px solid white;
+        }
+
+        .profile-photo img {
+            width: 280%;
+            height: 280%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .profile-photo img.loading {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Nama (GANTI BAGIAN INI DENGAN NAMA ANDA) */
+        .name {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;     /* Jarak dengan title */
+        }
+
+        /* Profesi/Gelar (GANTI DENGAN PROFESI ANDA) */
+        .title {
+            font-size: 16px;
+            opacity: 0.9;           /* Sedikit transparan */
+            letter-spacing: 1px;    /* Spasi antar huruf */
+        }
+
+        /* ============================================
+           BAGIAN 4: CONTENT (Isi Utama)
+           ============================================ */
+        .content {
+            padding: 30px;          /* Jarak di dalam kotak */
+        }
+
+        /* Satu Section (Bagian) */
+        .section {
+            margin-bottom: 25px;    /* Jarak antar section */
+        }
+
+        /* Judul Section */
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;            /* Warna abu gelap */
+            margin-bottom: 12px;
+            display: flex;          /* Untuk alignment */
+            align-items: center;
+            gap: 8px;               /* Jarak antar elemen */
+            border-bottom: 2px solid #667eea; /* Garis bawah */
+            padding-bottom: 8px;
+        }
+
+        /* Dekorasi sebelum judul */
+        .section-title::before {
+            content: '';            /* Buat elemen kosong */
+            width: 4px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 2px;
+        }
+
+        /* Info Item (Baris informasi) */
+        .info-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+            align-items: flex-start;
+        }
+
+        /* Label (Nama field: Email, Telpon, dll) */
+        .info-label {
+            font-weight: 600;
+            color: #0230fd;         /* Warna biru */
+            min-width: 100px;       /* Lebar minimum */
+        }
+
+        /* Nilai (Isi field: nama@email.com, dll) */
+        .info-value {
+            color: #555;            /* Warna abu */
+            line-height: 1.5;       /* Spasi baris */
+        }
+
+        /* ============================================
+           BAGIAN 5: SKILLS (Badge Keahlian)
+           ============================================ */
+        .skills-container {
+            display: flex;          /* Horizontal layout */
+            flex-wrap: wrap;        /* Wrap ke baris baru jika penuh */
+            gap: 8px;               /* Jarak antar skill */
+        }
+
+        /* Satu skill badge */
+        .skill-badge {
+            background: #f0f0f0;    /* Latar abu muda */
+            color: #333;
+            padding: 8px 15px;      /* Padding dalam */
+            border-radius: 20px;    /* Sangat bulat */
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid #ddd; /* Border tipis */
+            transition: all 0.3s;   /* Animasi smooth */
+            cursor: pointer;
+        }
+
+        /* Saat hover (mouse di atas) */
+        .skill-badge:hover {
+            background: #667eea;    /* Berubah jadi biru */
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-2px); /* Naik sedikit */
+        }
+
+        /* ============================================
+           BAGIAN 6: SOCIAL MEDIA (Link Media Sosial)
+           ============================================ */
+        .social-links {
+            display: flex;
+            gap: 12px;
+            justify-content: center; /* Center horizontally */
+        }
+
+        /* Satu social link button */
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;     /* Lingkaran */
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;  /* Hilangkan underline */
+            color: #002fff;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: 2px solid #ddd;
+        }
+
+        /* Saat hover */
+        .social-link:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        /* ============================================
+           BAGIAN 7: BUTTON (Tombol Aksi)
+           ============================================ */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Styling button dasar */
+        .btn {
+            flex: 1;                /* Setiap button sama lebar */
+            padding: 12px 20px;     /* Padding dalam */
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;        /* Ubah kursor jadi tangan */
+            transition: all 0.3s;
+        }
+
+        /* Button Biru (Primary) */
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;    /* Lebih gelap */
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Button Putih dengan Border (Secondary) */
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #f5f5f5;    /* Sedikit abu */
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(4, 27, 130, 0.4);
+        }
+
+        /* ============================================
+           BAGIAN 8: FOOTER (Bagian Bawah)
+           ============================================ */
+        .footer {
+            background: #f8f9fa;    /* Latar abu sangat muda */
+            padding: 20px;
+            text-align: center;
+            color: #999;            /* Warna abu terang */
+            font-size: 12px;
+            border-top: 1px solid #eee; /* Garis atas tipis */
+        }
+
+        /* ============================================
+           BAGIAN 9: RESPONSIVE (Untuk Mobile)
+           ============================================ */
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 10px;
+            }
+
+            .header {
+                padding: 30px 15px;  /* Kurangi padding */
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .name {
+                font-size: 24px;     /* Lebih kecil */
+            }
+
+            .section-title {
+                font-size: 16px;
+            }
+
+            .btn-group {
+                flex-direction: column; /* Button jadi vertikal */
+            }
+
+            .social-links {
+                margin-top: 15px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+        <div class="profile-photo">
+            <img src="Profil run.jpeg" 
+            alt="Foto Profil">
+        </div>
+            <!-- GANTI: Nama Anda di sini -->
+        <div class="name">VICKY SAPUTRO</div>
+            
+            <!-- GANTI: Profesi atau gelar Anda -->
+            <div class="title">MAHASISWA INFORMATIKA</div>
+        </div>
+
+        <!-- ================================================
+             BAGIAN II: CONTENT (Isi Utama)
+             ================================================ -->
+        <div class="content">
+
+            <!-- ========== SECTION 1: TENTANG SAYA ========== -->
+            <div class="section">
+                <div class="section-title">Tentang Saya</div>
+                <!-- GANTI: Deskripsi tentang diri Anda -->
+                <p style="color: #666; line-height: 1.6; margin: 0;">
+                    Saya adalah mahasiswa Informatika semester 4 yang sedang belajar pengembangan pemrograman WEB. 
+                    Passionate dalam pengembangan web. Selalu siap belajar hal-hal baru dan 
+                    berkontribusi pada proyek yang menantang.
+                </p>
+            </div>
+
+            <!-- ========== SECTION 2: KONTAK ========== -->
+            <div class="section">
+                <div class="section-title">Kontak</div>
+                
+                <!-- GANTI: Email Anda -->
+                <div class="info-item">
+                    <span class="info-label">📧 Email:</span>
+                    <span class="info-value">vickysaputro1104@email.com</span>
+                </div>
+                
+                <!-- GANTI: Nomor Telepon Anda -->
+                <div class="info-item">
+                    <span class="info-label">📱 Telpon:</span>
+                    <span class="info-value">+62 838-4598-5531</span>
+                </div>
+                
+                <!-- GANTI: Lokasi Anda -->
+                <div class="info-item">
+                    <span class="info-label">📍 Lokasi:</span>
+                    <span class="info-value">Magetan, Jawa Timur</span>
+                </div>
+            </div>
+
+            <!-- ========== SECTION 3: PENDIDIKAN ========== -->
+            <div class="section">
+                <div class="section-title">Pendidikan</div>
+                
+                <!-- GANTI: Nama Universitas -->
+                <div class="info-item">
+                    <span class="info-label">Universitas:</span>
+                    <span class="info-value">Universitas Muhhamdiyah Surakarta</span>
+                </div>
+                
+                <!-- GANTI: Program Studi -->
+                <div class="info-item">
+                    <span class="info-label">Program:</span>
+                    <span class="info-value">S1 Informatika</span>
+                </div>
+
+            <!-- ========== SECTION 4: KEAHLIAN ========== -->
+            <div class="section">
+                <div class="section-title">HOBI</div>
+                <div class="skills-container">
+                    <!-- GANTI: Tambah atau kurangi skill sesuai keahlian Anda -->
+                    <span class="skill-badge">Running</span>
+                    <span class="skill-badge">Traveling</span>
+                    <span class="skill-badge">Futsal</span>
+                    <span class="skill-badge">Voli</span>
+                    <span class="skill-badge">Sepak Bola</span>
+                </div>
+            </div>
+
+            <!-- ========== SECTION 5: TOMBOL AKSI ========== -->
+            <div class="btn-group">
+                <!-- GANTI: Link email dan CV Anda -->
+                <button class="btn btn-primary" onclick="contactMe()">
+                    📧 Hubungi Saya
+                </button>
+                <button class="btn btn-secondary" onclick="downloadCV()">
+                    📥 Download CV
+                </button>
+            </div>
+
+            <!-- ========== SECTION 6: MEDIA SOSIAL ========== -->
+            <div class="section" style="margin-bottom: 0; text-align: center;">
+                <div class="section-title" style="justify-content: center; width: fit-content; margin: 0 auto 15px;">
+                    Media Sosial
+                </div>
+                <div class="social-links">
+                    <!-- GANTI: Link ke akun media sosial Anda -->
+                    <a href="https://www.instagram.com/vickyaze11?igsh=MWF4czM3dGtoNTg0OA==" class="social-link" title="Instagram">IG</a>
+                    <a href="https://www.tiktok.com/@viccc11?_r=1&_t=ZS-95ny6gSHkWN" class="social-link" title="Tiktok">TT</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================
+             BAGIAN III: FOOTER (Bagian Bawah)
+             ================================================ -->
+        <div class="footer">
+            © 2026 Profile Saya. Dibuat dengan HTML & CSS
+        </div>
+
+    </div>
+
+    <!-- ================================================
+         SCRIPT JAVASCRIPT (Fungsi Interaktif)
+         ================================================ -->
+    <script>
+        // FUNGSI 1: Tombol "Hubungi Saya"
+        // GANTI EMAIL dengan email Anda
+        function contactMe() {
+    window.location.href = 'https://wa.me/qr/MFRFNEZG3MG3N1';
+}
+
+
+        // FUNGSI 2: Tombol "Download CV"
+        // GANTI dengan link ke CV Anda
+        function downloadCV() {
+    window.location.href = 'cv-vicky-saputro.pdf';
+}
+    </script>
+</body>
+</html>
